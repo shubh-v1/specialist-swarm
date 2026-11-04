@@ -45,6 +45,27 @@ def load_inputs_as_context() -> str:
     return "\n\n".join(blocks)
 
 
+def build_user_message(context: str) -> str:
+    return (
+        f"Today's date is {AS_OF}. A new hire's profile has just come through "
+        "from HR. Please run the standard Hire-to-Onboard process:\n"
+        "1. Read the new-hire profile yourself.\n"
+        "2. Wave 1: delegate to Recruiter, IT Provisioning and Buddy Match in "
+        "parallel, each with only the documents it needs and today's date.\n"
+        "3. Wave 2: once Buddy Match has named the buddy, delegate to Welcome "
+        "Packet (no offer terms or reference details in its brief).\n"
+        "4. Reconcile the replies: dates, conditional-start implications for "
+        "IT, and the buddy name must all line up.\n"
+        "5. Produce the day-1 readiness pack as a branded Word document named "
+        "day1-readiness-pack.docx using the docx skill. If no docx skill is "
+        "available, output the pack as a structured markdown document.\n\n"
+        "Specialists have their own skills attached for their respective "
+        "domains. The start date is close, so flag anything with a deadline "
+        "in the next few days at the top.\n\n"
+        f"{context}"
+    )
+
+
 def main() -> None:
     if not os.environ.get("ANTHROPIC_API_KEY"):
         raise SystemExit("Set ANTHROPIC_API_KEY before running.")
@@ -72,24 +93,7 @@ def main() -> None:
     )
     Path(".last_session_id").write_text(session.id)
 
-    user_message = (
-        f"Today's date is {AS_OF}. A new hire's profile has just come through "
-        "from HR. Please run the standard Hire-to-Onboard process:\n"
-        "1. Read the new-hire profile yourself.\n"
-        "2. Wave 1: delegate to Recruiter, IT Provisioning and Buddy Match in "
-        "parallel, each with only the documents it needs and today's date.\n"
-        "3. Wave 2: once Buddy Match has named the buddy, delegate to Welcome "
-        "Packet (no offer terms or reference details in its brief).\n"
-        "4. Reconcile the replies: dates, conditional-start implications for "
-        "IT, and the buddy name must all line up.\n"
-        "5. Produce the day-1 readiness pack as a branded Word document named "
-        "day1-readiness-pack.docx using the docx skill. If no docx skill is "
-        "available, output the pack as a structured markdown document.\n\n"
-        "Specialists have their own skills attached for their respective "
-        "domains. The start date is close, so flag anything with a deadline "
-        "in the next few days at the top.\n\n"
-        f"{context}"
-    )
+    user_message = build_user_message(context)
 
     # Stream the events — this is the demo. Watch for the two delegation waves.
     print("\n=== EVENT STREAM (this is the demo) ===\n")
