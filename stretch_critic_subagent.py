@@ -102,7 +102,7 @@ def main() -> None:
     )
 
     print(f"Coordinator roster updated. Now includes critic.")
-    print("Re-run run_deal_desk.py to see the critic in action.")
+    print("Re-run run_onboarding.py to see the critic in action.")
 
 
 if __name__ == "__main__":

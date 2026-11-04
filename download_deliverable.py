@@ -1,8 +1,8 @@
 """
-Download every file produced by a Deal Desk session.
+Download every file produced by a Hire-to-Onboard session.
 
 By default reads the session ID from `.last_session_id` (written by
-run_deal_desk.py). You can also pass the session ID as a CLI argument
+run_onboarding.py). You can also pass the session ID as a CLI argument
 to grab files from any older session.
 
 Usage:
